@@ -31,7 +31,7 @@ jobs:
         run: ruff check .
 
       - name: Run MyPy Typechecker
-        run: mypy backend/
+        run: mypy --config-file pyproject.toml backend/
 
       - name: Run Test Suite
         run: pytest backend/ --cov=backend --cov-report=xml
