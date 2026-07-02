@@ -1,10 +1,9 @@
 import os
 import json
 import logging
-from typing import List, Dict, Any
+from typing import List
 import numpy as np
 from google import genai
-from google.genai.errors import APIError
 
 from backend.rag.embeddings.embedder import embedder
 

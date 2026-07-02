@@ -1,9 +1,8 @@
 import os
 import json
 import logging
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any
 from google import genai
-from google.genai.errors import APIError
 
 from backend.rag.db import get_neo4j_driver
 

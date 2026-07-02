@@ -1,7 +1,6 @@
 import os
 import uuid
 import time
-import json
 import asyncio
 import logging
 from fastapi import FastAPI, HTTPException
@@ -84,7 +83,6 @@ Reply with only the lowercase category name."""
             session_id = str(uuid.uuid4())
             
         agent_trace = []
-        start_time = time.time()
         
         # 1. Classify query
         agent_trace.append({"agent": "Orchestrator", "status": "thinking", "message": "Classifying user query...", "timestamp": time.time()})
@@ -310,5 +308,6 @@ async def agent_card():
 
 if __name__ == "__main__":
     import sys
+    import uvicorn
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8100
     uvicorn.run(app, host="0.0.0.0", port=port)

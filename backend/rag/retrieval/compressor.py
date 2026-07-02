@@ -1,8 +1,8 @@
 import os
 import logging
+import asyncio
 from typing import List, Dict, Any
 from google import genai
-from google.genai.errors import APIError
 
 logger = logging.getLogger("rip.retrieval.compressor")
 

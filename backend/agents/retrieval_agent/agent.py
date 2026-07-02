@@ -3,7 +3,7 @@ import uvicorn
 import logging
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
 import httpx
 
 from backend.rag.retrieval.hybrid_search import hybrid_searcher
@@ -116,6 +116,5 @@ async def agent_card():
 if __name__ == "__main__":
     import sys
     # Import Tuple
-    from typing import Tuple
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8101
     uvicorn.run(app, host="0.0.0.0", port=port)

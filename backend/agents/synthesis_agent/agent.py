@@ -6,7 +6,6 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Any
 from google import genai
-from google.genai import types
 
 logger = logging.getLogger("rip.agents.synthesis")
 

@@ -9,13 +9,15 @@ on:
 jobs:
   lint-and-test-backend:
     runs-on: ubuntu-latest
+    env:
+      MOCK_DB: "true"
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-python: "3.12"
+          python-version: "3.12"
 
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh

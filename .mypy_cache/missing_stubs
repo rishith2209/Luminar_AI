@@ -1,0 +1,13 @@
+pandas-stubs
+types-Deprecated
+types-PyYAML
+types-Pygments
+types-colorama
+types-decorator
+types-defusedxml
+types-jsonschema
+types-pexpect
+types-protobuf
+types-pytz
+types-pywin32
+types-requests

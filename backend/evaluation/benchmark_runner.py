@@ -4,7 +4,7 @@ import time
 import asyncio
 import logging
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import Dict, Any
 from rich.console import Console
 from rich.table import Table
 
@@ -131,7 +131,7 @@ async def run_eval_benchmark(sample_size: int = 5) -> Dict[str, Any]:
         json.dump(summary, f, indent=2)
         
     console.print(table)
-    console.print(f"\n[bold green]Averages:[/bold green]")
+    console.print("\n[bold green]Averages:[/bold green]")
     console.print(f"Latency: {avg_lat:.2f}s")
     console.print(f"Faithfulness: {avg_f:.2f}")
     console.print(f"Relevancy: {avg_rel:.2f}")

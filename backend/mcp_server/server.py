@@ -1,8 +1,7 @@
-import os
 import json
 import time
 import logging
-from typing import Dict, Any, List, Optional
+from typing import List, Optional
 from mcp.server.fastmcp import FastMCP
 
 from backend.rag.retrieval.hybrid_search import hybrid_searcher

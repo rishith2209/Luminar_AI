@@ -1,9 +1,8 @@
-import os
 import uvicorn
 import logging
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Optional
 
 from backend.evaluation.ragas_eval import evaluator
 from backend.rag.db import get_postgres_pool

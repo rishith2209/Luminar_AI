@@ -3,7 +3,6 @@ import json
 import logging
 from typing import List, Dict, Any
 from google import genai
-from google.genai.errors import APIError
 from prometheus_client import Counter
 
 from backend.rag.retrieval.hybrid_search import hybrid_searcher
@@ -102,7 +101,7 @@ Expanded Query:"""
 
         # 3. If fewer than 2 chunks remain, expand query and re-retrieve
         if len(passed_chunks) < 2 and retry_count < 1:
-            logger.info(f"Fewer than 2 chunks passed relevance threshold. Expanding query and retrying...")
+            logger.info("Fewer than 2 chunks passed relevance threshold. Expanding query and retrying...")
             SELF_RAG_RETRY_COUNT.inc()
             expanded_query = await self.expand_query(query)
             logger.info(f"Expanded query: '{expanded_query}'")

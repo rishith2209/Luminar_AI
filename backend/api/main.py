@@ -3,7 +3,6 @@ import time
 import uuid
 import json
 import asyncio
-import logging
 from fastapi import FastAPI, UploadFile, File, Form, WebSocket, WebSocketDisconnect, Request, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -303,7 +302,7 @@ async def get_system_stats():
             "query_count": query_count,
             "status": "healthy"
         }
-    except Exception as e:
+    except Exception:
         # Fallback stats for UI
         return {
             "total_documents": 12,
@@ -336,4 +335,5 @@ async def websocket_trace_endpoint(websocket: WebSocket, session_id: str):
         ws_manager.disconnect(session_id, websocket)
 
 if __name__ == "__main__":
+    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
