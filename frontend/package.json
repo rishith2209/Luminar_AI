@@ -1,0 +1,27 @@
+{
+  "name": "rip-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "15.1.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "lucide-react": "^0.395.0",
+    "recharts": "^2.12.7",
+    "zustand": "^4.5.2",
+    "swr": "^2.2.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.4.5",
+    "tailwindcss": "^4.0.0-alpha.15"
+  }
+}

@@ -1,0 +1,32 @@
+FROM python:3.12-slim AS builder
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv for fast dependency management
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
+
+WORKDIR /app
+
+# Copy dependency specifications
+COPY pyproject.toml .
+
+# Sync dependencies (without installing current project)
+RUN uv pip install --system -r pyproject.toml
+
+# Copy codebase
+COPY . .
+
+# Set default ports and environment variables
+ENV PYTHONUNBUFFERED=1
+
+# Expose ports for API, MCP, and agents
+EXPOSE 8000 8001 8100 8101 8102 8103 8104
+
+# Run script to determine entrypoint based on environment
+CMD ["python", "-m", "backend.api.main"]

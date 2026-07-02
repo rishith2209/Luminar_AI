@@ -1,0 +1,177 @@
+[
+  {
+    "query": "What are the core components of the Model Context Protocol (MCP)?",
+    "ground_truth_answer": "The Model Context Protocol (MCP) features three core architectural elements: the Client (the hosting application like Cursor or Claude Desktop), the Server (exposing custom contexts, prompt formats, and tool invocations), and the Protocol layer standardizing JSON-RPC communication.",
+    "relevant_document_ids": ["doc-mcp-core"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "Compare Model Context Protocol (MCP) and A2A protocol design.",
+    "ground_truth_answer": "While MCP standardizes tool and context routing between a client and external local servers via stdio/SSE JSON-RPC, the A2A (Agent-to-Agent) protocol defines messaging structures and stateful Task/Artifact allocations enabling independent agents to delegate tasks across network domains.",
+    "relevant_document_ids": ["doc-mcp-core", "doc-a2a-specs"],
+    "query_type": "comparative",
+    "difficulty": "medium"
+  },
+  {
+    "query": "How does HyDE improve semantic document search accuracy?",
+    "ground_truth_answer": "HyDE (Hypothetical Document Embedding) uses an LLM to construct a hypothetical ideal answer to a query, and embeds this fake answer. Since document-to-document similarity has a higher vector cosine overlap than question-to-document similarity, it bypasses the search gap.",
+    "relevant_document_ids": ["doc-hyde-rag"],
+    "query_type": "analytical",
+    "difficulty": "medium"
+  },
+  {
+    "query": "Explain the multi-hop reasoning path in Graph RAG models.",
+    "ground_truth_answer": "Graph RAG extracts entity nodes and edge connections using LLMs, storing them in graph databases. At query time, entity nodes are matched, and 2-hop graph traversals fetch connected facts, linking disparate documents that would otherwise miss semantic vector overlap.",
+    "relevant_document_ids": ["doc-graph-rag"],
+    "query_type": "analytical",
+    "difficulty": "hard"
+  },
+  {
+    "query": "Why does RRF outperform plain vector search in hybrid indexing?",
+    "ground_truth_answer": "Reciprocal Rank Fusion (RRF) merges search rank positions rather than raw scores. By weighting hits according to the formula 1/(k + rank), it prevents outlier search engine scores from skewing the results, yielding superior precision.",
+    "relevant_document_ids": ["doc-hybrid-search"],
+    "query_type": "analytical",
+    "difficulty": "medium"
+  },
+  {
+    "query": "What is Self-RAG and when is query expansion triggered?",
+    "ground_truth_answer": "Self-RAG is a self-reflective pipeline that rates chunk relevance (1-5 scale) dynamically. If retrieved passages fail to score 3 or above, leaving fewer than 2 relevant chunks, query expansion using synonyms is triggered to re-run search.",
+    "relevant_document_ids": ["doc-self-rag"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "What is the token compression benefit of contextual compressors?",
+    "ground_truth_answer": "Contextual compressors slice retrieved chunks down to only query-relevant sentences using LLM filters. This prunes context by approximately 60%, saving token expenditures and avoiding context-window dilution.",
+    "relevant_document_ids": ["doc-compression-rag"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "What standard metadata schema is used in RIP PostgreSQL tables?",
+    "ground_truth_answer": "The platform PostgreSQL schema tracks documents (id, title, source_url, source_type, created_at), chunks (id, document_id, text, page_num, chunk_index, source_url, timestamp), and evaluations (faithfulness, relevancy, recall, overall).",
+    "relevant_document_ids": ["doc-rip-schema"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "Compare stdio and SSE transports inside MCP servers.",
+    "ground_truth_answer": "Stdio transport establishes local standard input/output pipes (ideal for local editors like Cursor), while SSE (Server-Sent Events) establishes network HTTP streams paired with POST clients, enabling remote execution.",
+    "relevant_document_ids": ["doc-mcp-core"],
+    "query_type": "comparative",
+    "difficulty": "medium"
+  },
+  {
+    "query": "How is a semantic chunker built from sentence similarity?",
+    "ground_truth_answer": "It splits text into sentences, embeds them, and computes cosine similarity of adjacent sentence vectors. If the similarity is above a threshold (0.85), sentences are grouped; otherwise, a new chunk is started.",
+    "relevant_document_ids": ["doc-ingest-pip"],
+    "query_type": "analytical",
+    "difficulty": "medium"
+  },
+  {
+    "query": "What is the role of an A2aAgentExecutor?",
+    "ground_truth_answer": "The A2aAgentExecutor is the bridging framework between the agentic runtime and A2A network requests. It manages session state, registers runners, and publishes the Agent Card metadata.",
+    "relevant_document_ids": ["doc-a2a-specs"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "Describe the pipeline from user query to evaluation output.",
+    "ground_truth_answer": "The Orchestrator receives the query, classifies it, triggers the retrieval agent to gather chunks, calls the synthesis agent to write an answer with citations, and invokes the eval agent to score the outcome with RAGAS metrics.",
+    "relevant_document_ids": ["doc-rip-orchestration"],
+    "query_type": "analytical",
+    "difficulty": "hard"
+  },
+  {
+    "query": "What database holds entity coordinates and how is it queried?",
+    "ground_truth_answer": "Entities and relationships are held in Neo4j Graph Database. The database is queried using Cypher MATCH statements to locate nodes and traverse paths up to 2 hops.",
+    "relevant_document_ids": ["doc-graph-rag"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "When does the retrieval agent fallback to live web search?",
+    "ground_truth_answer": "If quality gating (Self-RAG) filters out chunks such that fewer than 3 high-quality context documents remain, the retrieval agent invokes the Web Agent to scrape Google Search results.",
+    "relevant_document_ids": ["doc-self-rag", "doc-web-agent"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "How does the synthesis agent flag hallucinations?",
+    "ground_truth_answer": "The synthesis agent inspects its generated response. Any factual claim or sentence not backed by a citation linked to the source context chunks is reported in the flags list.",
+    "relevant_document_ids": ["doc-rip-synthesis"],
+    "query_type": "factual",
+    "difficulty": "medium"
+  },
+  {
+    "query": "What metrics are tracked by the RAG evaluation harness?",
+    "ground_truth_answer": "The platform custom harness implements Faithfulness (grounded claims ratio), Answer Relevancy (semantic similarity of generated questions), Context Recall (facts covered), and Context Precision.",
+    "relevant_document_ids": ["doc-ragas-specs"],
+    "query_type": "factual",
+    "difficulty": "medium"
+  },
+  {
+    "query": "Explain RRF score computation.",
+    "ground_truth_answer": "For every candidate, the reciprocal rank in each search results system is summed with a constant parameter k (e.g., 60). The score is computed as RRF_Score = 1/(60 + rank_bm25) + 1/(60 + rank_vector).",
+    "relevant_document_ids": ["doc-hybrid-search"],
+    "query_type": "analytical",
+    "difficulty": "medium"
+  },
+  {
+    "query": "How is Redis cache utilized in HyDE strategy?",
+    "ground_truth_answer": "It caches the 768-dimension hypothetical answer embeddings, keyed by the SHA256 hash of the query with a TTL of 3600 seconds, avoiding redundant LLM generation and embedding calls.",
+    "relevant_document_ids": ["doc-hyde-rag"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "Describe semantic chunk grouping threshold values.",
+    "ground_truth_answer": "The group boundary similarity uses 0.85 cosine similarity. Higher threshold values yield smaller, more specific sentence chunks, whereas lower threshold values combine broader contextual information.",
+    "relevant_document_ids": ["doc-ingest-pip"],
+    "query_type": "analytical",
+    "difficulty": "medium"
+  },
+  {
+    "query": "How do you trace agent execution with Prometheus?",
+    "ground_truth_answer": "Prometheus monitors query latency histograms, strategy usage counters, active websocket trace sessions gauges, and token count indicators via standard metrics endpoints.",
+    "relevant_document_ids": ["doc-rip-observability"],
+    "query_type": "factual",
+    "difficulty": "easy"
+  },
+  {
+    "query": "What is the A2A Agent Card url and standard profile?",
+    "ground_truth_answer": "The card is located at /.well-known/agent.json. The profile publishes the agent's name, capabilities list, description, endpoints URL, and supported input/output modes.",
+    "relevant_document_ids": ["doc-a2a-specs"],
+    "query_type": "factual",
+    "difficulty": "medium"
+  },
+  {
+    "query": "How does the web agent parse search outputs?",
+    "ground_truth_answer": "The web agent executes queries using Gemini grounding tools, retrieves search links, queries target text content, decomposes scripts/styles using BeautifulSoup, and chunks content.",
+    "relevant_document_ids": ["doc-web-agent"],
+    "query_type": "analytical",
+    "difficulty": "medium"
+  },
+  {
+    "query": "Compare Context Recall and Context Precision.",
+    "ground_truth_answer": "Context Recall measures if all ground truth facts are represented in the retrieved chunks, while Context Precision (useful chunks ratio) measures if retrieved chunks are highly relevant.",
+    "relevant_document_ids": ["doc-ragas-specs"],
+    "query_type": "comparative",
+    "difficulty": "medium"
+  },
+  {
+    "query": "What happens when fewer than 2 chunks pass Self-RAG scoring?",
+    "ground_truth_answer": "Query expansion is triggered. The pipeline prompts Gemini Flash for synonyms/search optimizations, updates the query string, re-runs retrieval, and increments the retry counter.",
+    "relevant_document_ids": ["doc-self-rag"],
+    "query_type": "analytical",
+    "difficulty": "hard"
+  },
+  {
+    "query": "What is the purpose of LangSmith runs instrumentation?",
+    "ground_truth_answer": "It provides deep observability by registering inputs, outputs, latency times, and token cost metrics for every ADK agent call, linking execution trees.",
+    "relevant_document_ids": ["doc-rip-observability"],
+    "query_type": "factual",
+    "difficulty": "medium"
+  }
+]

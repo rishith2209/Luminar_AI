@@ -1,0 +1,112 @@
+tools:
+  - name: search_knowledge_base
+    description: "Semantic search over the ingested document knowledge base"
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          description: "Search query string"
+        top_k:
+          type: integer
+          description: "Number of documents to return"
+          default: 5
+        strategy:
+          type: string
+          description: "Strategy choice: hybrid, hyde, graph"
+          enum: ["hybrid", "hyde", "graph"]
+          default: "hybrid"
+      required: ["query"]
+
+  - name: ingest_document
+    description: "Add a document, web URL, or YouTube video transcript to the knowledge base"
+    parameters:
+      type: object
+      properties:
+        source:
+          type: string
+          description: "Path to file, url, youtube link, or plain text content"
+        source_type:
+          type: string
+          description: "Format type of the source"
+          enum: ["pdf", "url", "youtube", "text", "docx", "txt", "markdown"]
+        title:
+          type: string
+          description: "Optional descriptive document title"
+      required: ["source", "source_type"]
+
+  - name: ask_research_agent
+    description: "Ask the multi-agent research pipeline a question to generate a grounded answer with citations"
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          description: "Research topic/question"
+        mode:
+          type: string
+          description: "Retrieval mode: fast or thorough"
+          enum: ["fast", "thorough"]
+          default: "thorough"
+      required: ["query"]
+
+  - name: query_knowledge_graph
+    description: "Query entity relationships in the knowledge graph"
+    parameters:
+      type: object
+      properties:
+        entity:
+          type: string
+          description: "Name of target entity node"
+        hops:
+          type: integer
+          description: "Degree depth of traversal graph query"
+          default: 2
+      required: ["entity"]
+
+  - name: evaluate_answer
+    description: "Score an answer against a context using custom RAGAS metrics"
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          description: "Original research query"
+        answer:
+          type: string
+          description: "Generated response to evaluate"
+        context_chunks:
+          type: array
+          items:
+            type: string
+          description: "List of chunk contexts used"
+      required: ["query", "answer", "context_chunks"]
+
+  - name: get_document_stats
+    description: "Get statistics about the knowledge base (documents, chunks, last update)"
+    parameters:
+      type: object
+      properties: {}
+
+  - name: run_benchmark
+    description: "Run RAG evaluation benchmark against benchmark dataset"
+    parameters:
+      type: object
+      properties:
+        sample_size:
+          type: integer
+          description: "Number of test cases to run"
+          default: 5
+
+  - name: explain_retrieval
+    description: "Show exactly why a specific chunk was retrieved for a query"
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          description: "Original user search query"
+        chunk_id:
+          type: string
+          description: "UUID string of the target chunk"
+      required: ["query", "chunk_id"]

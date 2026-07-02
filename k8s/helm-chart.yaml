@@ -1,0 +1,133 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: research-platform
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rip-config
+  namespace: research-platform
+data:
+  QDRANT_HOST: "qdrant.research-platform.svc.cluster.local"
+  REDIS_HOST: "redis.research-platform.svc.cluster.local"
+  NEO4J_URI: "bolt://neo4j.research-platform.svc.cluster.local:7687"
+  POSTGRES_HOST: "postgres.research-platform.svc.cluster.local"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-pvc
+  namespace: research-platform
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rip-backend
+  namespace: research-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rip-backend
+  template:
+    metadata:
+      labels:
+        app: rip-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/yourorg/rip-backend:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: rip-config
+          env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rip-secrets
+                  key: gemini-api-key
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rip-backend-hpa
+  namespace: research-platform
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: rip-backend
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rip-ingress
+  namespace: research-platform
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - research-platform.example.com
+      secretName: rip-tls-cert
+  rules:
+    - host: research-platform.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rip-frontend
+                port:
+                  number: 3000
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: rip-backend
+                port:
+                  number: 8000
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: rip-servicemonitor
+  namespace: research-platform
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app: rip-backend
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
