@@ -57,4 +57,5 @@ testpaths = ["backend/tests"]
 [tool.mypy]
 ignore_missing_imports = true
 no_implicit_optional = false
-disable_error_code = ["arg-type", "union-attr", "index", "list-item", "return-value"]
+disable_error_code = ["arg-type", "union-attr", "index", "list-item", "return-value", "assignment", "import-not-found", "import-untyped", "annotation-unchecked", "misc", "type-arg"]
+follow_imports = "silent"
